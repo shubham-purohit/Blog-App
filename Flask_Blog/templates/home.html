@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container" style="color:white;text-align:center">
+    {% for post in posts %}
+        <div style="border:0.5px dashed white;margin-top:30px;">
+            <h1>{{post.title}}</h1>
+            <p>By {{post.author}} on {{post.date}}</p>
+            <hr style="background:white;padding:0;margin:0">
+            <p>{{post.content}}</p>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

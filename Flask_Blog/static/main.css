@@ -1,0 +1,21 @@
+body {
+    background:black
+}
+
+.nav-item {
+    border-bottom:black .5px solid
+}
+
+.nav-item-hover:hover {
+    border-bottom:white .5px solid
+}
+
+.nav-drop {
+    background:black;
+    color:white;
+}
+
+.nav-drop:hover {
+    background:white;
+    color:black;
+}
