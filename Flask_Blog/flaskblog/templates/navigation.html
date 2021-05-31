@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar navbar-dark">
+<nav class="navbar navbar-expand-lg navbar navbar-dark" style="background:green">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">BlogHub</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -17,19 +17,22 @@
         </li>
       </ul>
       <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link nav-item-hover" href="/about">About</a>
-        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           Options
           </a>
           <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" style="background:black;right:0;left:auto;">
-            <li><a class="dropdown-item nav-drop" href="{{url_for('register_page')}}">Register</a></li>
-            <li><a class="dropdown-item nav-drop" href="{{url_for('login_page')}}">Login</a></li>
-            <li><a class="dropdown-item nav-drop" href="#">Help</a></li>
+            <li><a class="dropdown-item nav-drop" href="{{url_for('account_page')}}">Account</a></li>
+            {% if not current_user.is_authenticated %}
+              <li><a class="dropdown-item nav-drop" href="{{url_for('register_page')}}">Register</a></li>
+              <li><a class="dropdown-item nav-drop" href="{{url_for('login_page')}}">Login</a></li>
+            {% endif %}
+            <li><a class="dropdown-item nav-drop" href="{{url_for('about_page')}}">About</a></li>
             <li><hr class="dropdown-divider" style="background:white"></li>
-            <li><a class="dropdown-item nav-drop" href="{{url_for('login_page')}}">Logout</a></li>
+            <li><a class="dropdown-item nav-drop" href="#">Help</a></li>
+            {% if current_user.is_authenticated %}
+              <li><a class="dropdown-item nav-drop" href="{{url_for('logout_page')}}">Logout</a></li>
+            {% endif %}
           </ul>
         </li>
       </ul>

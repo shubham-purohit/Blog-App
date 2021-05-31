@@ -1,8 +1,11 @@
-from flask import Flask, render_template, url_for, flash, redirect
-from forms import RegistrationForm, LoginForm
+from flask import render_template, url_for, flash, redirect, request
+from flask_login import login_user, current_user, logout_user, login_required
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = '920505ba20664f2fd1146bb4fda71e32'
+from . import app, db, bcrypt
+from .models import User
+from .forms import RegistrationForm, LoginForm
+
+
 posts = [
     {
         "title": "The Imitation Game",
@@ -60,18 +63,31 @@ def about_page():
 
 @app.route("/register", methods=['GET', 'POST'])
 def register_page():
+    if current_user.is_authenticated:
+        return redirect(url_for('home_page'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        flash(f'Account created for {form.username.data}!', 'success')
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        db.session.add(user)
+        db.session.commit()
+        flash('Your account has been created!', 'success')
         return redirect(url_for('login_page'))
     return render_template('register.html', title='Register', form=form)
 
 
 @app.route("/login", methods=['GET', 'POST'])
 def login_page():
+    if current_user.is_authenticated:
+        return redirect(url_for('home_page'))
     form = LoginForm()
     if form.validate_on_submit():
-        if form.email.data == 'admin@gmail.com' and form.password.data == 'password':
+        user = User.query.filter_by(email=form.email.data).first()
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
+            login_user(user, remember=form.remember.data)
+            next_page = request.args.get('next')
+            if next_page:
+                return redirect(next_page)
             flash('Successfully logged in!', 'success')
             return redirect(url_for('home_page'))
         else:
@@ -79,5 +95,14 @@ def login_page():
     return render_template('login.html', title='Login', form=form)
 
 
-if __name__ == "__main__":
-    app.run(debug=True)
+@app.route("/logout", methods=['GET', 'POST'])
+def logout_page():
+    logout_user()
+    return redirect(url_for('login_page'))
+
+
+@app.route("/account", methods=['GET', 'POST'])
+@login_required
+def account_page():
+    return render_template('account.html', title='Account')
+
