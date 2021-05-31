@@ -1,19 +1,19 @@
 <nav class="navbar navbar-expand-lg navbar navbar-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/">TweetMe</a>
+    <a class="navbar-brand" href="/">BlogHub</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
+        <li class="nav-item nav-item-hover">
           <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/tweets">Tweets</a>
+        <li class="nav-item nav-item-hover">
+          <a class="nav-link" href="#">Blogs</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/tweet-create">Create</a>
+        <li class="nav-item nav-item-hover">
+          <a class="nav-link" href="#">Create</a>
         </li>
       </ul>
       <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
@@ -25,11 +25,11 @@
           Options
           </a>
           <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" style="background:black;right:0;left:auto;">
-            <li><a class="dropdown-item nav-drop" href="/profile/edit">Profile</a></li>
-            <li><a class="dropdown-item nav-drop" href="#">About</a></li>
+            <li><a class="dropdown-item nav-drop" href="{{url_for('register_page')}}">Register</a></li>
+            <li><a class="dropdown-item nav-drop" href="{{url_for('login_page')}}">Login</a></li>
             <li><a class="dropdown-item nav-drop" href="#">Help</a></li>
             <li><hr class="dropdown-divider" style="background:white"></li>
-            <li><a class="dropdown-item nav-drop" href="/logout">Logout</a></li>
+            <li><a class="dropdown-item nav-drop" href="{{url_for('login_page')}}">Logout</a></li>
           </ul>
         </li>
       </ul>
