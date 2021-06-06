@@ -3,12 +3,17 @@
 <div class="container" style="color:white;text-align:center">
     {% for post in posts %}
         <div class="wrapper">
-            <h1 style="justify-content:center;margin-bottom:0">{{post.title}}</h1>
-            <p style="margin-top:0">{{post.author}} | {{post.date}}</p>
+            <div class="inline-wrapper">
+                <img class="rounded-circle wrapper-item-media display-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+                <div class="wrapper-item">
+                    <a style="text-decoration:none;color:white;justify-content:center;margin-bottom:0" href="{{ url_for('blog_detail_page', blog_id=post.id) }}"><h1>{{post.title}}</h1></a>
+                    <p style="margin-top:0">{{post.author.username}} | {{ post.date_posted.strftime('%Y-%m-%d') }}</p>
+                </div>
+            </div>
             <hr style="background:white;padding:0;margin-top:0">
             <p class="main" >{{post.content}}</p>
             <hr style="background:white;padding:0;margin-top:0">
-            <p>{{post.read}} readers | up votes:6 | down votes:1</p>
+            <p>12,340 readers | up votes:6 | down votes:1</p>
         </div>
     {% endfor %}
 </div>

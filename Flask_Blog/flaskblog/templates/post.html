@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container" style="color:white;text-align:center">
+  <div class="wrapper">
+    <div class="inline-wrapper">
+        <img class="rounded-circle wrapper-item-media display-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+        <div class="wrapper-item">
+            <h1 style="justify-content:center;margin-bottom:0">{{post.title}}</h1>
+            <p style="margin-top:0">{{post.author.username}} | {{ post.date_posted.strftime('%Y-%m-%d') }}</p>
+        </div>
+        <div class="wrapper-item">
+            {% if post.author == current_user %}
+            <a href="{{ url_for('blog_update_page', blog_id=post.id) }}">
+                <button class="btn btn-info" style="float:right;margin-left:10px;">Update</button>
+            </a>
+            <a href="{{ url_for('blog_update_page', blog_id=post.id) }}" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                <button class="btn btn-danger" style="float:right;margin-left:10px;">Delete</button>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    <hr style="background:white;padding:0;margin-top:0">
+    <p class="main" >{{post.content}}</p>
+    <hr style="background:white;padding:0;margin-top:0">
+    <p>12,340 readers | up votes:6 | down votes:1</p>
+  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Are you sure you want to delete this blog?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <form method="POST" action="{{ url_for('blog_delete_page', blog_id=post.id)}}" value="Delete">
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

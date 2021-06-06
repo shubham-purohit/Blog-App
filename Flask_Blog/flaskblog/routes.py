@@ -1,12 +1,12 @@
 import os
 import secrets
 from PIL import Image
-from flask import render_template, url_for, flash, redirect, request
+from flask import render_template, url_for, flash, redirect, request, abort
 from flask_login import login_user, current_user, logout_user, login_required
 
 from . import app, db, bcrypt
-from .models import User
-from .forms import RegistrationForm, LoginForm, AccountUpdateForm
+from .models import User, Post
+from .forms import RegistrationForm, LoginForm, AccountUpdateForm, BlogCreateForm
 
 
 posts = [
@@ -56,7 +56,8 @@ at the time. I refer to the affair at the Victory Ball. """
 @app.route("/")
 @app.route("/home")
 def home_page():
-    return render_template("home.html", posts=posts)
+    db_posts= Post.query.all()
+    return render_template("home.html", posts=db_posts)
 
 
 @app.route("/about")
@@ -135,4 +136,53 @@ def account_page():
         form.email.data = current_user.email
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template('account.html', title='Account', image_file=image_file, form= form)
+
+
+@app.route("/blog/create", methods=['GET', 'POST'])
+@login_required
+def blog_create_page():
+    form = BlogCreateForm()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, content=form.content.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Blog has been created!', 'success')
+        return redirect(url_for('home_page'))
+    return render_template('create_blog.html', title='New Blog', form=form, legend='New Post')
+
+
+@app.route("/blog/<int:blog_id>", methods=['GET', 'POST'])
+def blog_detail_page(blog_id):
+    post = Post.query.get_or_404(blog_id)
+    return render_template('post.html', title=post.title, post=post)
+
+
+@app.route("/blog/<int:blog_id>/update", methods=['GET', 'POST'])
+@login_required
+def blog_update_page(blog_id):
+    post = Post.query.get_or_404(blog_id)
+    if post.author != current_user:
+        abort(403)
+    form = BlogCreateForm()
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content = form.content.data
+        db.session.commit()
+        flash('Your blog has been updated')
+        return redirect(url_for('blog_detail_page', blog_id=post.id))
+    if request.method == 'GET':
+        form.title.data = post.title
+        form.content.data = post.content
+    return render_template('create_blog.html', title='Update Post', form=form, legend='Update Post')
+
+
+@app.route("/blog/<int:blog_id>/delete", methods=['POST'])
+@login_required
+def blog_delete_page(blog_id):
+    post = Post.query.get_or_404(blog_id)
+    if post.author != current_user:
+        abort(403)
+    db.session.delete(post)
+    db.session.commit()
+    return redirect(url_for('home_page'))
 

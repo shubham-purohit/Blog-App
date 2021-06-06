@@ -3,7 +3,6 @@ body {
 }
 
 .wrapper {
-  display: flex;
   flex-flow: row wrap;
   font-weight: bold;
   text-align: center;
@@ -21,6 +20,26 @@ body {
   text-align: left;
 }
 
+.display-img {
+    height:90px;
+    margin:10px;
+}
+
+.inline-wrapper {
+    display: flex;
+    flex-wrap:wrap;
+}
+
+.wrapper-item{
+    padding-left:5%;
+    flex: 0 1 40%;
+    text-align:left;
+}
+
+.wrapper-item-media {
+    flex: 0 1 10%;
+}
+
 .content-section {
     margin:50px 10px 0 0;
     background:green;
@@ -33,7 +52,7 @@ body {
 }
 
 .media {
-margin-right:50px;
+    margin-right:50px;
 }
 
 .account-img {
