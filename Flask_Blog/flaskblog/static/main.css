@@ -21,7 +21,26 @@ body {
   text-align: left;
 }
 
+.content-section {
+    margin:50px 10px 0 0;
+    background:green;
+    width:50%;
+    padding: 10px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    text-align: left;
+}
 
+.media {
+margin-right:50px;
+}
+
+.account-img {
+    height:150px;
+    width:150px;
+    margin:10px;
+}
 
 .nav-item {
     border-bottom:green .5px solid
